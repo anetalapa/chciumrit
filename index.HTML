@@ -1,1 +1,54 @@
 hello
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chci umřít</title>
+    <style>
+          body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff0000, #ffff00);
+            background-size: 400% 400%;
+            animation: gradientAnimation 5s ease infinite;
+        }
+        h1 {
+            font-size: 4rem;
+            color: white;
+            text-align: center;
+            animation: textBlink 1s infinite alternate;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes textBlink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Chci umřít</h1>
+</body>
+</html>
