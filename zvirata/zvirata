@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie zvířat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .animal-card {
+            background-color: white;
+            width: 200px;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .animal-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .animal-card h3 {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        .animal-card p {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Galerie Zvířat</h1>
+    <p>Seznamte se se šesti úžasnými zvířaty!</p>
+</header>
+
+<div class="container">
+    <div class="animal-card">
+        <img src="https://example.com/animal1.jpg" alt="Zvíře 1">
+        <h3>Zvíře 1</h3>
+        <p>Informace o zvířeti 1.</p>
+    </div>
+    <div class="animal-card">
+        <img src="https://example.com/animal2.jpg" alt="Zvíře 2">
+        <h3>Zvíře 2</h3>
+        <p>Informace o zvířeti 2.</p>
+    </div>
+    <div class="animal-card">
+        <img src="https://example.com/animal3.jpg" alt="Zvíře 3">
+        <h3>Zvíře 3</h3>
+        <p>Informace o zvířeti 3.</p>
+    </div>
+    <div class="animal-card">
+        <img src="https://example.com/animal4.jpg" alt="Zvíře 4">
+        <h3>Zvíře 4</h3>
+        <p>Informace o zvířeti 4.</p>
+    </div>
+    <div class="animal-card">
+        <img src="https://example.com/animal5.jpg" alt="Zvíře 5">
+        <h3>Zvíře 5</h3>
+        <p>Informace o zvířeti 5.</p>
+    </div>
+    <div class="animal-card">
+        <img src="https://example.com/animal6.jpg" alt="Zvíře 6">
+        <h3>Zvíře 6</h3>
+        <p>Informace o zvířeti 6.</p>
+    </div>
+</div>
+
+</body>
+</html>
