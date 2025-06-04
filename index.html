@@ -1,114 +1,19 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Cafe</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5dc; /* Krémově béžová barva */
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-
-        header h1 {
-            font-size: 3em;
-            font-family: 'Cursive', sans-serif;
-        }
-
-        nav {
-            background-color: #444;
-            overflow: hidden;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 14px 20px;
-            display: inline-block;
-            transition: background-color 0.3s;
-        }
-
-        nav a:hover {
-            background-color: #555;
-        }
-
-        section {
-            padding: 20px;
-            margin: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #333;
-            color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Flappy Bird</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-    <header>
-        <h1>Cat Cafe</h1>
-    </header>
-
-    <nav>
-        <a href="#domovska">Domovská stránka</a>
-        <a href="#onas">O nás</a>
-        <a href="#kocicky">Kočičky</a>
-        <a href="#jidelnilistek">Jídelní lístek</a>
-    </nav>
-
-    <section id="domovska">
-        <h2>Vítejte v Cat Cafe!</h2>
-        <p>V naší kočičí kavárně si můžete užít příjemné chvíle s našimi roztomilými kočičkami a zároveň si vychutnat skvělou kávu a domácí zákusky.</p>
-        <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fkfmx.com%2Fmeow-lubbock-just-might-be-getting-a-cat-cafe-in-the-near-future%2F&psig=AOvVaw0rU3bFB22LqHDgM2H8K8co&ust=1740754691909000&source=images&cd=vfe&opi=89978449&ved=0CBcQjhxqFwoTCKjV7emO5IsDFQAAAAAdAAAAABAJ" alt="Kočičí kavárna">
-    </section>
-
-    <section id="onas">
-        <h2>O nás</h2>
-        <p>Kočičí kavárna je ideálním místem pro všechny milovníky koček a kávové nadšence. Naše kavárna nabízí nejen skvělou atmosféru, ale i možnost trávit čas s našimi kočičkami, které si zamilujete!</p>
-    </section>
-
-    <section id="kocicky">
-        <h2>Kočičky</h2>
-        <p>V naší kavárně máme několik kočiček, které jsou přátelské a zvyklé na kontakt s lidmi. Každá kočička má svůj vlastní příběh a ráda se podělí o svou společnost s každým návštěvníkem.</p>
-    </section>
-
-    <section id="jidelnilistek">
-        <h2>Jídelní lístek</h2>
-        <p>V naší nabídce najdete nejen vynikající kávu, ale i různé čaje a osvěžující nápoje. K tomu nabízíme domácí zákusky a občerstvení, které si můžete vychutnat v příjemném prostředí s kočičkami.</p>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 Cat Cafe. Všechna práva vyhrazena.</p>
-    </footer>
-
+  <div id="game">
+    <canvas id="canvas" width="400" height="600"></canvas>
+    <div id="score">Skóre: 0</div>
+    <div id="leaderboard">
+      <h2>Leaderboard</h2>
+      <ul id="leaderboard-list"></ul>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
-
