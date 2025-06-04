@@ -113,10 +113,9 @@ document.addEventListener("touchstart", (e) => {
   if (isGameStarted) {
     bird.velocity = bird.lift;
   }
-  e.preventDefault(); // zabrání double-tapu přiblížit
+  e.preventDefault();
 }, { passive: false });
 
-// Zamezí dvojkliku/dvojtapu na mobilech
 let lastTap = 0;
 document.addEventListener("touchend", function(e) {
   const currentTime = new Date().getTime();
