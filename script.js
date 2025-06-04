@@ -1,14 +1,26 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const startBtn = document.getElementById("startBtn");
+
 let bird = { x: 50, y: 150, width: 20, height: 20, gravity: 0.6, lift: -10, velocity: 0 };
 let pipes = [];
 let frame = 0;
 let score = 0;
 let isGameOver = false;
+let isGameStarted = false;
 
 const scoreDisplay = document.getElementById("score");
 const leaderboardList = document.getElementById("leaderboard-list");
+
+function resetGame() {
+  bird.y = 150;
+  bird.velocity = 0;
+  pipes = [];
+  frame = 0;
+  score = 0;
+  isGameOver = false;
+}
 
 function drawBird() {
   ctx.fillStyle = "yellow";
@@ -66,10 +78,13 @@ function updateBird() {
 
 function gameOver() {
   isGameOver = true;
+  isGameStarted = false;
   score -= 1;
   updateLeaderboard(score);
   alert("Konec hry! Tvé skóre: " + score);
-  document.location.reload();
+  startBtn.classList.remove("hidden");
+  resetGame();
+  loadLeaderboard();
 }
 
 function draw() {
@@ -78,22 +93,45 @@ function draw() {
   drawPipes();
 }
 
-function update() {
-  if (isGameOver) return;
-
+function gameLoop() {
+  if (!isGameStarted || isGameOver) return;
   frame++;
   updateBird();
   updatePipes();
   draw();
   scoreDisplay.innerText = "Skóre: " + score;
-
-  requestAnimationFrame(update);
+  requestAnimationFrame(gameLoop);
 }
 
 document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") {
+  if (e.code === "Space" && isGameStarted) {
     bird.velocity = bird.lift;
   }
+});
+
+document.addEventListener("touchstart", (e) => {
+  if (isGameStarted) {
+    bird.velocity = bird.lift;
+  }
+  e.preventDefault(); // zabrání double-tapu přiblížit
+}, { passive: false });
+
+// Zamezí dvojkliku/dvojtapu na mobilech
+let lastTap = 0;
+document.addEventListener("touchend", function(e) {
+  const currentTime = new Date().getTime();
+  const tapLength = currentTime - lastTap;
+  if (tapLength < 300) {
+    e.preventDefault();
+  }
+  lastTap = currentTime;
+}, false);
+
+startBtn.addEventListener("click", () => {
+  startBtn.classList.add("hidden");
+  isGameStarted = true;
+  resetGame();
+  gameLoop();
 });
 
 function updateLeaderboard(currentScore) {
@@ -116,14 +154,3 @@ function loadLeaderboard() {
 }
 
 loadLeaderboard();
-update();
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") {
-    bird.velocity = bird.lift;
-  }
-});
-
-// Přidáme dotykové ovládání pro mobily
-document.addEventListener("touchstart", () => {
-  bird.velocity = bird.lift;
-});

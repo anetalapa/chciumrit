@@ -36,3 +36,20 @@ body {
   list-style: none;
   padding: 0;
 }
+#startBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  padding: 10px 20px;
+  background: #ffcc00;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#startBtn.hidden {
+  display: none;
+}
