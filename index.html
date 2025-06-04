@@ -1,21 +1,23 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flappy Bird</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="game">
-    <canvas id="canvas" width="400" height="600"></canvas>
-    <button id="startBtn">Start</button>
-    <div id="score">Skóre: 0</div>
+  <div class="game-container">
+    <h1>Flappy Bird</h1>
+    <div id="score">Score: 0</div>
+    <button id="start-btn">Start</button>
+    <canvas id="gameCanvas" width="320" height="480"></canvas>
     <div id="leaderboard">
       <h2>Leaderboard</h2>
-      <ul id="leaderboard-list"></ul>
+      <ol id="scores-list"></ol>
     </div>
   </div>
+
   <script src="script.js"></script>
 </body>
-  
+</html>

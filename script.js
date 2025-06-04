@@ -1,25 +1,19 @@
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
-const startBtn = document.getElementById("startBtn");
-
-let bird = { x: 50, y: 150, width: 20, height: 20, gravity: 0.6, lift: -10, velocity: 0 };
-let pipes = [];
-let frame = 0;
-let score = 0;
-let isGameOver = false;
-let isGameStarted = false;
-
+const startBtn = document.getElementById("start-btn");
 const scoreDisplay = document.getElementById("score");
-const leaderboardList = document.getElementById("leaderboard-list");
+const leaderboardList = document.getElementById("scores-list");
+
+let bird, gravity, velocity, score, pipes, gameRunning;
 
 function resetGame() {
-  bird.y = 150;
-  bird.velocity = 0;
-  pipes = [];
-  frame = 0;
+  bird = { x: 50, y: 150, width: 20, height: 20 };
+  gravity = 0.6;
+  velocity = 0;
   score = 0;
-  isGameOver = false;
+  pipes = [];
+  gameRunning = true;
+  scoreDisplay.textContent = "Score: 0";
 }
 
 function drawBird() {
@@ -27,130 +21,117 @@ function drawBird() {
   ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
 }
 
-function drawPipes() {
+function drawPipe(pipe) {
   ctx.fillStyle = "green";
-  pipes.forEach(pipe => {
-    ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
-    ctx.fillRect(pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
-  });
+  ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+  ctx.fillRect(pipe.x, pipe.bottom, pipe.width, canvas.height - pipe.bottom);
 }
 
 function updatePipes() {
-  if (frame % 90 === 0) {
-    let top = Math.random() * 200 + 50;
-    let gap = 120;
+  if (pipes.length === 0 || pipes[pipes.length - 1].x < 200) {
+    let topHeight = Math.floor(Math.random() * 200) + 50;
     pipes.push({
       x: canvas.width,
       width: 40,
-      top: top,
-      bottom: canvas.height - (top + gap),
-      passed: false
+      top: topHeight,
+      bottom: topHeight + 100,
     });
   }
 
-  pipes.forEach(pipe => {
+  pipes.forEach((pipe) => {
     pipe.x -= 2;
-    if (!pipe.passed && pipe.x + pipe.width < bird.x) {
-      score++;
-      pipe.passed = true;
-    }
-
-    if (
-      bird.x < pipe.x + pipe.width &&
-      bird.x + bird.width > pipe.x &&
-      (bird.y < pipe.top || bird.y + bird.height > canvas.height - pipe.bottom)
-    ) {
-      gameOver();
-    }
+    drawPipe(pipe);
   });
 
-  pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
+  pipes = pipes.filter((pipe) => pipe.x + pipe.width > 0);
 }
 
-function updateBird() {
-  bird.velocity += bird.gravity;
-  bird.y += bird.velocity;
+function detectCollision(pipe) {
+  return (
+    bird.x < pipe.x + pipe.width &&
+    bird.x + bird.width > pipe.x &&
+    (bird.y < pipe.top || bird.y + bird.height > pipe.bottom)
+  );
+}
+
+function updateScore() {
+  pipes.forEach((pipe) => {
+    if (!pipe.scored && pipe.x + pipe.width < bird.x) {
+      score++;
+      pipe.scored = true;
+      scoreDisplay.textContent = "Score: " + score;
+    }
+  });
+}
+
+function updateGame() {
+  if (!gameRunning) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  velocity += gravity;
+  bird.y += velocity;
 
   if (bird.y + bird.height > canvas.height || bird.y < 0) {
-    gameOver();
+    endGame();
   }
-}
 
-function gameOver() {
-  isGameOver = true;
-  isGameStarted = false;
-  score -= 1;
-  updateLeaderboard(score);
-  alert("Konec hry! Tvé skóre: " + score);
-  startBtn.classList.remove("hidden");
-  resetGame();
-  loadLeaderboard();
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBird();
-  drawPipes();
-}
-
-function gameLoop() {
-  if (!isGameStarted || isGameOver) return;
-  frame++;
-  updateBird();
   updatePipes();
-  draw();
-  scoreDisplay.innerText = "Skóre: " + score;
-  requestAnimationFrame(gameLoop);
+  drawBird();
+  updateScore();
+
+  for (let pipe of pipes) {
+    if (detectCollision(pipe)) {
+      endGame();
+    }
+  }
+
+  requestAnimationFrame(updateGame);
 }
 
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space" && isGameStarted) {
-    bird.velocity = bird.lift;
+function flap() {
+  if (gameRunning) {
+    velocity = -10;
   }
-});
-
-document.addEventListener("touchstart", (e) => {
-  if (isGameStarted) {
-    bird.velocity = bird.lift;
-  }
-  e.preventDefault();
-}, { passive: false });
-
-let lastTap = 0;
-document.addEventListener("touchend", function(e) {
-  const currentTime = new Date().getTime();
-  const tapLength = currentTime - lastTap;
-  if (tapLength < 300) {
-    e.preventDefault();
-  }
-  lastTap = currentTime;
-}, false);
-
-startBtn.addEventListener("click", () => {
-  startBtn.classList.add("hidden");
-  isGameStarted = true;
-  resetGame();
-  gameLoop();
-});
-
-function updateLeaderboard(currentScore) {
-  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
-  let name = prompt("Zadej své jméno:");
-  if (!name) name = "Neznámý hráč";
-  leaderboard.push({ name, score: currentScore });
-  leaderboard.sort((a, b) => b.score - a.score);
-  leaderboard = leaderboard.slice(0, 5);
-  localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
 }
 
-function loadLeaderboard() {
-  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+function endGame() {
+  gameRunning = false;
+  saveScore(score);
+  showLeaderboard();
+}
+
+function saveScore(score) {
+  let scores = JSON.parse(localStorage.getItem("flappyScores")) || [];
+  scores.push(score);
+  scores.sort((a, b) => b - a);
+  scores = scores.slice(0, 5); // top 5
+  localStorage.setItem("flappyScores", JSON.stringify(scores));
+}
+
+function showLeaderboard() {
   leaderboardList.innerHTML = "";
-  leaderboard.forEach(entry => {
+  const scores = JSON.parse(localStorage.getItem("flappyScores")) || [];
+  scores.forEach((s) => {
     const li = document.createElement("li");
-    li.textContent = `${entry.name}: ${entry.score}`;
+    li.textContent = `Score: ${s}`;
     leaderboardList.appendChild(li);
   });
 }
 
-loadLeaderboard();
+startBtn.addEventListener("click", () => {
+  resetGame();
+  updateGame();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") {
+    if (!gameRunning) {
+      startBtn.click();
+    } else {
+      flap();
+    }
+  }
+});
+
+canvas.addEventListener("click", flap);
