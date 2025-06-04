@@ -137,6 +137,7 @@ startBtn.addEventListener("click", () => {
 function updateLeaderboard(currentScore) {
   let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
   let name = prompt("Zadej své jméno:");
+  if (!name) name = "Neznámý hráč";
   leaderboard.push({ name, score: currentScore });
   leaderboard.sort((a, b) => b.score - a.score);
   leaderboard = leaderboard.slice(0, 5);
