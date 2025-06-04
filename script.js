@@ -117,3 +117,13 @@ function loadLeaderboard() {
 
 loadLeaderboard();
 update();
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") {
+    bird.velocity = bird.lift;
+  }
+});
+
+// Přidáme dotykové ovládání pro mobily
+document.addEventListener("touchstart", () => {
+  bird.velocity = bird.lift;
+});
